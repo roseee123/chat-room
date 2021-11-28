@@ -1,7 +1,6 @@
-<p>chat works!</p>
-
 <div *ngFor="let message of messages">
-  {{message}}
+  {{message.User}}-{{message.Content}}
 </div>
-<input [(ngModel)]="message" />
-<button (click)="sendMessage()">Send</button>
+
+<input [(ngModel)]="messageContent" />
+<button (click)="sendMessage(messageContent)">Send</button>

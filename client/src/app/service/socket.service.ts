@@ -13,20 +13,34 @@ export class SocketService {
   constructor() {
     this.socket = io(SERVER_URL);
   }
+  public connect(): Observable<any> {
+    return new Observable(observer => {
+      this.socket.on('connect', () => {
+        observer.next();
+      });
+    });
+  }
 
-  public sendMessage(message: any): void {
+  public disconnect(): Observable<any> {
+    return new Observable(observer => {
+      this.socket.on('disconnect', () => {
+        observer.next();
+      });
+    });
+  }
+
+  public sendMessage(message: Message): void {
     this.socket.emit('sendMessage', message);
   }
 
-  public getMessage(): Observable<any> {
+  public getMessage(): Observable<Message> {
     return new Observable(observer => {
-      this.socket.on('message', (data) => {
+      this.socket.on('message', (data: Message) => {
         observer.next(data);
       });
       return () => {
         this.socket.disconnect();
       }
-    })
-
+    });
   }
 }
