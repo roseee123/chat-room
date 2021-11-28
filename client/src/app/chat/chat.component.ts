@@ -1,4 +1,4 @@
-import { Message } from './../interface/message';
+import { Message, User } from './../interface/message';
 import { SocketService } from './../service/socket.service';
 import { Component, OnInit } from '@angular/core';
 import { UserComponent } from '../user/user.component';
@@ -10,16 +10,17 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  messages: Message[] = [];
-  connection: any;
-  name: string = '';
-  messageContent: string = '';
-  message: Message = {
+  public messages: Message[] = [];
+  private connection: any;
+  private name: string = '';
+  public messageContent: string = '';
+  private message: Message = {
     User: '',
     Content: '',
     SendTime: ''
   };
-  dialogRef!: MatDialogRef<UserComponent> | null;
+  public dialogRef!: MatDialogRef<UserComponent> | null;
+  public users: User[] = [];
 
   constructor(
     private socketService: SocketService,
@@ -31,7 +32,7 @@ export class ChatComponent implements OnInit {
 
   }
 
-  openDialog(): void {
+  private openDialog(): void {
     const dialogRef = this.dialog.open(UserComponent, {
       width: '250px',
       data: this.name
@@ -43,24 +44,27 @@ export class ChatComponent implements OnInit {
     });
 
     this.connection = this.socketService.getMessage()
-    .subscribe((message: Message) => {
-      this.messages.push(message);
-    });
+      .subscribe((message: Message) => {
+        this.messages.push(message);
+      });
 
     this.socketService.connect()
       .subscribe(() => {
         console.log('connected');
       });
 
-      this.socketService.disconnect()
+    this.socketService.disconnect()
       .subscribe(() => {
         console.log('disconnected');
       });
+
+    this.socketService.getUserList()
+      .subscribe((user: User[]) => {
+        this.users = user;
+      });
   }
 
-
-
-  sendMessage(message: string): void {
+  public sendMessage(message: string): void {
     const date = new Date();
     this.message.User = this.name;
     this.message.Content = this.messageContent;
@@ -68,4 +72,5 @@ export class ChatComponent implements OnInit {
     this.socketService.sendMessage(this.message);
     this.messageContent = '';
   }
+
 }

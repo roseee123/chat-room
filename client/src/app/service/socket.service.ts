@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-import { Message } from '../interface/message'
+import { Message, User } from '../interface/message'
 
 const SERVER_URL = 'http://localhost:8080';
 @Injectable({
@@ -41,6 +41,14 @@ export class SocketService {
       return () => {
         this.socket.disconnect();
       }
+    });
+  }
+
+  public getUserList(): Observable<User[]> {
+    return new Observable(observer => {
+      this.socket.on('userList', (data: User[]) => {
+        observer.next(data);
+      });
     });
   }
 }
