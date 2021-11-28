@@ -3,7 +3,7 @@ import * as http from "http";
 import * as socketio from "socket.io";
 import { Message } from "./message";
 import { Schema, model,  connect } from 'mongoose';
-const DB_CONNECT = 'mongodb://localhost:27017/chat-room'';
+const DB_CONNECT = 'mongodb://localhost:27017/chat-room';
 
 const app = express();
 const httpServer = http.createServer();
