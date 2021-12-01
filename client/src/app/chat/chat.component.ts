@@ -1,8 +1,10 @@
-import { Message, User } from './../interface/message';
+import { Message } from './../interface/message';
+import { User } from './../interface/user';
 import { SocketService } from './../service/socket.service';
 import { Component, OnInit } from '@angular/core';
 import { UserComponent } from '../user/user.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-chat',
@@ -12,7 +14,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 export class ChatComponent implements OnInit {
   public messages: Message[] = [];
   private connection: any;
-  private name: string = '';
+  public name: string = '';
   public messageContent: string = '';
   private message: Message = {
     User: '',
@@ -35,33 +37,36 @@ export class ChatComponent implements OnInit {
   private openDialog(): void {
     const dialogRef = this.dialog.open(UserComponent, {
       width: '250px',
-      data: this.name
+      data: ''
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-      this.name = result;
+      if (result) {
+        console.log(`Dialog result: ${result}`);
+        this.name = result;
+
+        this.socketService.connect(this.name)
+          .subscribe(() => {
+            console.log('connected');
+          });
+
+        this.connection = this.socketService.getMessage()
+          .subscribe((message: Message) => {
+            console.log('eee');
+            this.messages.push(message);
+          });
+
+        this.socketService.disconnect()
+          .subscribe(() => {
+            console.log('disconnected');
+          });
+
+        this.socketService.getUserList()
+          .subscribe((user: User[]) => {
+            this.users = user;
+          });
+      }
     });
-
-    this.connection = this.socketService.getMessage()
-      .subscribe((message: Message) => {
-        this.messages.push(message);
-      });
-
-    this.socketService.connect()
-      .subscribe(() => {
-        console.log('connected');
-      });
-
-    this.socketService.disconnect()
-      .subscribe(() => {
-        console.log('disconnected');
-      });
-
-    this.socketService.getUserList()
-      .subscribe((user: User[]) => {
-        this.users = user;
-      });
   }
 
   public sendMessage(message: string): void {
@@ -72,5 +77,4 @@ export class ChatComponent implements OnInit {
     this.socketService.sendMessage(this.message);
     this.messageContent = '';
   }
-
 }

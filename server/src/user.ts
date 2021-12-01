@@ -15,7 +15,7 @@ export function addUser(username, id): void {
     // }
 }
 
-export function removeUser(userName, id) {
+export function removeUser(userName, id): void {
     const index = users.findIndex(user => user.Id === id);
     if (index !== -1) {
         users.splice(index, 1)[0];

@@ -9,6 +9,7 @@ import { UserComponent } from './user/user.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule} from '@angular/material/input';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MatInputModule} from '@angular/material/input';
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

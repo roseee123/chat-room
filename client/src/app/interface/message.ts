@@ -3,8 +3,3 @@ export interface Message {
   Content: string;
   SendTime: string;
 }
-
-export interface User {
-  id: string;
-  username: string;
-}

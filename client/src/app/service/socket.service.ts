@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-import { Message, User } from '../interface/message'
+import { Message } from '../interface/message';
+import { User } from '../interface/user'
 
 const SERVER_URL = 'http://localhost:8080';
+
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
-  private socket: Socket;
+  private socket: any;
 
-  constructor() {
-    this.socket = io(SERVER_URL);
-  }
-  public connect(): Observable<any> {
+  constructor() {}
+
+  public connect(username: string): Observable<any> {
     return new Observable(observer => {
+      this.socket = io(SERVER_URL, { query: { User: username } });
       this.socket.on('connect', () => {
         observer.next();
       });

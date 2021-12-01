@@ -1,0 +1,15 @@
+.container-fluid{
+  height: calc(100vh - 124px);
+  .card-header,.card-footer{
+    background-color: #c2b3e9;
+  }
+  .card-body{
+    background-color: rgb(250, 250, 250);
+  }
+  .chatroom{
+    min-height: 70vh;
+    .alert{
+      width: fit-content;
+    }
+  }
+}
