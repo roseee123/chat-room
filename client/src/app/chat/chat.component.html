@@ -7,8 +7,8 @@
       <div class="card-body">
         <div class="chatroom">
           <div *ngFor="let message of messages">
-            <div class="row" [ngClass]="{'text-right': message.User === name}">
-              <div class="col">
+            <div class="row">
+              <div class="col" [ngClass]="{'text-right': message.User === name}">
                 {{message.User}}
               </div>
             </div>
@@ -17,8 +17,8 @@
                 {{message.Content}}
               </div>
             </div>
-            <div class="row" [ngClass]="{'text-right': message.User === name}">
-              <div class="col">
+            <div class="row">
+              <div class="col" [ngClass]="{'text-right': message.User === name}">
                 {{message.SendTime | date:'short'}}
               </div>
             </div>
@@ -31,7 +31,7 @@
             <input [(ngModel)]="messageContent" type="text" class="form-control">
           </div>
           <div class="col-2">
-            <button type="button" class="btn btn-outline-dark" (click)="sendMessage(messageContent)">Send</button>
+            <button type="button" class="btn btn-outline-dark" (click)="sendMessage()">Send</button>
           </div>
         </div>
       </div>

@@ -34,7 +34,7 @@ export class ChatComponent implements OnInit {
 
   }
 
-  private openDialog(): void {
+  openDialog(): void {
     const dialogRef = this.dialog.open(UserComponent, {
       width: '250px',
       data: ''
@@ -69,7 +69,7 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  public sendMessage(message: string): void {
+  sendMessage(): void {
     const date = new Date();
     this.message.User = this.name;
     this.message.Content = this.messageContent;
