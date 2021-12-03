@@ -42,28 +42,22 @@ export class ChatComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(`Dialog result: ${result}`);
         this.name = result;
 
         this.socketService.connect(this.name)
           .subscribe(() => {
-            console.log('connected');
-          });
+            this.connection = this.socketService.getMessage()
+              .subscribe((message: Message) => {
+                this.messages.push(message);
+              });
 
-        this.connection = this.socketService.getMessage()
-          .subscribe((message: Message) => {
-            console.log('eee');
-            this.messages.push(message);
-          });
+            this.socketService.disconnect()
+              .subscribe();
 
-        this.socketService.disconnect()
-          .subscribe(() => {
-            console.log('disconnected');
-          });
-
-        this.socketService.getUserList()
-          .subscribe((user: User[]) => {
-            this.users = user;
+            this.socketService.getUserList()
+              .subscribe((user: User[]) => {
+                this.users = user;
+              });
           });
       }
     });

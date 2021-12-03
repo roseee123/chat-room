@@ -40,9 +40,6 @@ export class SocketService {
       this.socket.on('message', (data: Message) => {
         observer.next(data);
       });
-      return () => {
-        this.socket.disconnect();
-      }
     });
   }
 
