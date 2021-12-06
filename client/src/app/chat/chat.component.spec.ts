@@ -13,7 +13,8 @@ describe('ChatComponent', () => {
   let fixture: ComponentFixture<ChatComponent>;
   let MockSocketService = jasmine.createSpyObj('RealSocketService', ['connect', 'disconnect', 'sendMessage', 'getMessage', 'getUserList']);
   let dialogSpy: jasmine.Spy;
-  let dialogRefSpyObj = jasmine.createSpyObj({ afterClosed: of({}) });
+  let dialogRefSpyObj = jasmine.createSpyObj({ afterClosed: of('Rosa') });
+  
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,11 +44,13 @@ describe('ChatComponent', () => {
   it('should call openDialog', () => {
     const fixture = TestBed.createComponent(ChatComponent);
     const component = fixture.componentInstance;
-    const name = "Rosa";
+    let name: string = '';
     component.openDialog();
     expect(dialogSpy).toHaveBeenCalled();
     expect(dialogRefSpyObj.afterClosed).toHaveBeenCalled();
-    dialogRefSpyObj.afterClosed().subscribe(() => {
+    dialogRefSpyObj.afterClosed().subscribe((result: any) => {
+      name = result;
+      expect(name).toEqual('Rosa');
       expect(MockSocketService.connect).toHaveBeenCalled();
       MockSocketService.connect(name).subscribe(() => {
         expect(MockSocketService.getMessage).toHaveBeenCalled();
