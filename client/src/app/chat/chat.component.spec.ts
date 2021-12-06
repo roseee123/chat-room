@@ -11,13 +11,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 describe('ChatComponent', () => {
   let component: ChatComponent;
   let fixture: ComponentFixture<ChatComponent>;
-  let MockSocketService= jasmine.createSpyObj('RealSocketService',['connect','disconnect','sendMessage','getMessage','getUserList']);
+  let MockSocketService = jasmine.createSpyObj('RealSocketService', ['connect', 'disconnect', 'sendMessage', 'getMessage', 'getUserList']);
   let dialogSpy: jasmine.Spy;
   let dialogRefSpyObj = jasmine.createSpyObj({ afterClosed: of({}) });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [{provide: SocketService, useValue:MockSocketService}],
+      providers: [{ provide: SocketService, useValue: MockSocketService }],
       imports: [
         MatDialogModule,
         BrowserAnimationsModule],
@@ -43,8 +43,18 @@ describe('ChatComponent', () => {
   it('should call openDialog', () => {
     const fixture = TestBed.createComponent(ChatComponent);
     const component = fixture.componentInstance;
+    const name = "Rosa";
     component.openDialog();
     expect(dialogSpy).toHaveBeenCalled();
+    expect(dialogRefSpyObj.afterClosed).toHaveBeenCalled();
+    dialogRefSpyObj.afterClosed().subscribe(() => {
+      expect(MockSocketService.connect).toHaveBeenCalled();
+      MockSocketService.connect(name).subscribe(() => {
+        expect(MockSocketService.getMessage).toHaveBeenCalled();
+        expect(MockSocketService.disconnect).toHaveBeenCalled();
+        expect(MockSocketService.getUserList).toHaveBeenCalled();
+      })
+    });
   })
 
   it('should call sendMessage', () => {

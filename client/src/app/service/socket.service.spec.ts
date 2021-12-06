@@ -4,6 +4,7 @@ import { SocketService } from './socket.service';
 
 describe('SocketService', () => {
   let service: SocketService;
+  let socket;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

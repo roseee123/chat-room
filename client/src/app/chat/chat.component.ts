@@ -4,7 +4,6 @@ import { SocketService } from './../service/socket.service';
 import { Component, OnInit } from '@angular/core';
 import { UserComponent } from '../user/user.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-chat',
