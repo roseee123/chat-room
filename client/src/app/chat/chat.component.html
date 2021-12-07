@@ -2,6 +2,14 @@
   <div class="row justify-content-center align-items-center">
     <div class="card col-6 p-0">
       <div class="card-header">
+        Users
+      </div>
+      <div class="card-body">
+        <div class="row" *ngFor="let user of users">
+          {{user.Name}}
+        </div>
+      </div>
+      <div class="card-header">
         Chat Room
       </div>
       <div class="card-body">
@@ -34,12 +42,7 @@
             <button type="button" class="btn btn-outline-dark" (click)="sendMessage()">Send</button>
           </div>
         </div>
-      </div>
-      <div class="card-footer text-muted">
-        <div class="row" *ngFor="let user of users">
-          {{user.Id}}-{{user.Name}}
-        </div>
-      </div>
+      </div>     
     </div>
   </div>
 </div>
