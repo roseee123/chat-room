@@ -28,26 +28,21 @@ const MessageModel = mongoose.model<Message>('Message', messagesSchema);
 mongoose.connect(DB_CONNECT);
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
     const username = socket.handshake.query['User'];
     addUser(username, socket.id);
     io.emit("userList", getUsers());
 
     socket.on("disconnect", () => {
-        console.log("a user go out");
         removeUser(username, socket.id);
         let users = getUsers();
         io.emit("userList", users);
     });
 
     socket.on("sendMessage", (m: Message) => {
-        console.log("[server](message): %s", JSON.stringify(m));
         io.emit("message", m);
         const newMessage = new MessageModel(m);
         newMessage.save();
     });
 });
-
-
 
 httpServer.listen(8080);
